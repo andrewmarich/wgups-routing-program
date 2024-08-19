@@ -18,7 +18,7 @@ class Package:
         """
         Return a string representation of the package's current state.
         """
-        return f'{self.package_id}, {self.address}, {self.city}, {self.state}, {self.zip_code}, {self.deadline}, {self.weight}, {self.status}, {self.delivery_time}'
+        return f'ID: {self.package_id}; Address: {self.address}, {self.city}, {self.state}, {self.zip_code}; Deadline: {self.deadline}; Weight: {self.weight}, {self.status} at {self.delivery_time}.'
 
     def update_status(self, current_time):
         """
