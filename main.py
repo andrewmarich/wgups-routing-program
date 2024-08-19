@@ -44,6 +44,7 @@ def get_index(address):
 truck1 = Truck([1, 2, 4, 5, 13, 14, 15, 16, 19, 20, 29, 30, 31, 34, 37, 40], timedelta(hours=8))
 truck2 = Truck([3, 6, 18, 25, 28, 32, 36, 38],timedelta(hours=9, minutes=5))
 truck3 = Truck([7, 8, 9, 10, 11, 12, 17, 21, 22, 23, 24, 26, 27, 33, 35, 39], timedelta(hours=10, minutes=20))
+trucks = [truck1, truck2, truck3]
 
 def nearest_neighbor(truck):
     """
@@ -82,6 +83,7 @@ nearest_neighbor(truck1)
 nearest_neighbor(truck2)
 
 # Ensure truck 3 departs after the first two trucks have finished
+pkg_hash.lookup(9).address = "410 S State St" # Update the previously incorrect address for package 9
 truck3.depart_time = min(truck1.time, truck2.time)
 nearest_neighbor(truck3)
 
@@ -138,10 +140,13 @@ class Main:
     def view_single_package(self, convert_time):
         try:
             single_input = input("Please choose a package ID between 1 and 40: ")
-            pkg = pkg_hash.lookup(int(single_input))
+            pkg_id = int(single_input)
+            pkg = pkg_hash.lookup(pkg_id)
             if pkg:
                 pkg.update_status(convert_time)
-                print(str(pkg))
+                for i, truck in enumerate(trucks, start=1):
+                    if pkg_id in truck.packages:
+                        print(f'Truck {i} - {str(pkg)}')
             else:
                 print("Package not found; please try again.")
                 self.view_single_package(convert_time)
@@ -154,14 +159,18 @@ class Main:
             for pkg_id in range(1, 41):
                 pkg = pkg_hash.lookup(pkg_id)
                 pkg.update_status(convert_time)
-                print(str(pkg))
+                for i, truck in enumerate(trucks, start=1):
+                    if pkg_id in truck.packages:
+                        print(f'Truck {i} - {str(pkg)}')
+                        break  # No need to continue checking trucks once found
         except ValueError:
             self.exit_program("An error occurred; exiting the program.")
 
     def view_total_mileage(self):
-        total_mileage = truck1.mileage + truck2.mileage + truck3.mileage
-        print(f'The total distance traveled by all trucks is {total_mileage} miles.')
-        self.show_menu()
+        total_mileage = sum(truck.mileage for truck in trucks)
+        for i, truck in enumerate(trucks, start=1):
+            print(f'Truck {i} traveled {truck.mileage:.2f} miles.')
+        print(f'The total distance traveled by all trucks is {total_mileage:.2f} miles.')
 
     def exit_program(self, message):
         print(message)
