@@ -83,7 +83,6 @@ nearest_neighbor(truck1)
 nearest_neighbor(truck2)
 
 # Ensure truck 3 departs after the first two trucks have finished
-pkg_hash.lookup(9).address = "410 S State St" # Update the previously incorrect address for package 9
 truck3.depart_time = min(truck1.time, truck2.time)
 nearest_neighbor(truck3)
 
@@ -124,7 +123,8 @@ class Main:
             time_input = input("At what time do you want to view the delivery status? (HH:MM) ")
             hr, min = time_input.split(":")
             convert_time = timedelta(hours=int(hr), minutes=int(min))
-            
+            if convert_time > timedelta(hours=10, minutes=20):
+                pkg_hash.lookup(9).address = "410 S State St"
             pkg_input = input("Type 'all' to view every package or 'one' for a single package: ").lower()
             if pkg_input == "one":
                 self.view_single_package(convert_time)
