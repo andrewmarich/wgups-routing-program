@@ -123,7 +123,7 @@ class Main:
             time_input = input("At what time do you want to view the delivery status? (HH:MM) ")
             hr, min = time_input.split(":")
             convert_time = timedelta(hours=int(hr), minutes=int(min))
-            if convert_time > timedelta(hours=10, minutes=20):
+            if convert_time >= timedelta(hours=10, minutes=20):
                 pkg_hash.lookup(9).address = "410 S State St"
             pkg_input = input("Type 'all' to view every package or 'one' for a single package: ").lower()
             if pkg_input == "one":
