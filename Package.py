@@ -1,4 +1,7 @@
+from datetime import timedelta
+
 class Package:
+    
     def __init__(self, package_id, address, city, state, zip_code, deadline, weight, status):
         """
         Initialize a Package object with its details.
@@ -22,7 +25,7 @@ class Package:
 
     def update_status(self, current_time):
         """
-        Update the package's status based on the current time.
+        Update the package's status and address based on the current time.
         """
         if self.delivery_time and self.delivery_time < current_time:
             self.status = "Delivered"
@@ -30,3 +33,7 @@ class Package:
             self.status = "En Route"
         else:
             self.status = "At The Hub"
+         
+        # Update the address for package ID 9 if the time is after 10:20 am 
+        if self.package_id == 9 and current_time >= timedelta(hours=10, minutes=20):
+            self.address = "410 S State St"
