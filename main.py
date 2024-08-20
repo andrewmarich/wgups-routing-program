@@ -141,10 +141,9 @@ class Main:
             pkg_id = int(single_input)
             pkg = pkg_hash.lookup(pkg_id)
             if pkg:
-                pkg.update_status(convert_time)
                 for i, truck in enumerate(trucks, start=1):
                     if pkg_id in truck.packages:
-                        print(f'Truck {i} - {str(pkg)}')
+                        print(f'Truck {i} - {pkg.status_at_time(convert_time)}')
             else:
                 print("Package not found; please try again.")
                 self.view_single_package(convert_time)
@@ -156,11 +155,11 @@ class Main:
         try:
             for pkg_id in range(1, 41):
                 pkg = pkg_hash.lookup(pkg_id)
-                pkg.update_status(convert_time)
-                for i, truck in enumerate(trucks, start=1):
-                    if pkg_id in truck.packages:
-                        print(f'Truck {i} - {str(pkg)}')
-                        break  # No need to continue checking trucks once found
+                if pkg:
+                    for i, truck in enumerate(trucks, start=1):
+                        if pkg_id in truck.packages:
+                            print(f'Truck {i} - {pkg.status_at_time(convert_time)}')
+                            break  # No need to continue checking trucks once found
         except ValueError:
             self.exit_program("An error occurred; exiting the program.")
 
