@@ -20,17 +20,6 @@ class Package:
 
     def update_status(self, current_time):
         """
-        Update the package's status based on the current time.
-        """
-        if self.delivery_time and self.delivery_time < current_time:
-            self.status = "Delivered"
-        elif self.departure_time and self.departure_time <= current_time:
-            self.status = "En Route"
-        else:
-            self.status = "At The Hub"
-    
-    def status_at_time(self, current_time):
-        """
         Return a string representation of the package's status at a given time.
         This method does not modify the package object itself.
         """
@@ -39,10 +28,16 @@ class Package:
         if self.package_id == 9 and current_time >= timedelta(hours=10, minutes=20):
             address_to_use = "410 S State St"
 
-        # Update the status based on the current time
-        self.update_status(current_time)
+        # Determine the status and construct the status string
+        if self.delivery_time and self.delivery_time < current_time:
+            status = f"Delivered at {self.delivery_time}."
+        elif self.departure_time and self.departure_time <= current_time:
+            status = f"En Route at {current_time}."
+        else:
+            status = f"At The Hub at {current_time}."
 
-        return f'ID: {self.package_id}; Address: {address_to_use}, {self.city}, {self.state}, {self.zip_code}; Deadline: {self.deadline}; Weight: {self.weight}, {self.status} at {self.delivery_time}.'
+        # Return the formatted package details
+        return f'ID: {self.package_id}; Address: {address_to_use}, {self.city}, {self.state}, {self.zip_code}; Deadline: {self.deadline}; Weight: {self.weight}; {status}'
 
     def __str__(self):
         """
