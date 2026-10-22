@@ -1,4 +1,3 @@
-#Student ID: 011961081
 
 # Import necessary modules
 import csv
